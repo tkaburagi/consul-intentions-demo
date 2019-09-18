@@ -94,6 +94,26 @@ services:
       - "./consul.d:/config"
     command: ["consul", "connect", "envoy","-sidecar-for", "japanapp"]
     network_mode: "service:japanapp"
+
+  unintentionalapp:
+    build:
+      context: ./hashicorpjapanapp
+      dockerfile: Dockerfile
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.7
+    ports:
+      - 9090:8080
+  unintentionalapp_envoy:
+    image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
+    environment:
+      CONSUL_HTTP_ADDR: 10.5.0.2:8500
+      CONSUL_GRPC_ADDR: 10.5.0.2:8502
+      SERVICE_CONFIG: /config/sidecar-unintentionalapp.json
+    volumes:
+      - "./consul.d:/config"
+    command: ["consul", "connect", "envoy","-sidecar-for", "unintentionalapp"]
+    network_mode: "service:unintentionalapp"
   
 networks:
   vpcbr:
