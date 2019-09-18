@@ -1,0 +1,7 @@
+/consul_data/localdata/*
+/hashiapp/target/*
+/corpapp/target/*
+/japanapp/target/*
+/hashicorpjapanapp/target/*
+/web-front-consul/target/*
+/consul.d/*
