@@ -13,7 +13,6 @@ services:
       vpcbr:
         ipv4_address: 10.5.0.2
 
-  # Define web service and envoy sidecar proxy
   hashicorpjapanapp:
     build:
       context: ./hashicorpjapanapp
@@ -23,6 +22,7 @@ services:
         ipv4_address: 10.5.0.3
     ports:
       - 8080:8080
+      - 9102:9102
   hashicorpjapanapp_envoy:
     image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
     environment:
@@ -33,7 +33,7 @@ services:
       - "./consul.d:/config"
     command: ["consul", "connect", "envoy","-sidecar-for", "hashicorpjapanapp"]
     network_mode: "service:hashicorpjapanapp"
-  # Define api service and envoy sidecar proxy for version 1 of the service
+ 
   hashiapp:
     build:
       context: ./hashiapp
@@ -54,7 +54,6 @@ services:
     command: ["consul", "connect", "envoy","-sidecar-for", "hashiapp"]
     network_mode: "service:hashiapp"
   
-  # Define api service and envoy sidecar proxy for version 2 of the service
   corpapp:
     build:
       context: ./corpapp
@@ -114,6 +113,16 @@ services:
       - "./consul.d:/config"
     command: ["consul", "connect", "envoy","-sidecar-for", "unintentionalapp"]
     network_mode: "service:unintentionalapp"
+
+  prometheus-server:
+    image: prom/prometheus
+    ports:
+      - 9999:9090
+    volumes:
+      - /Users/kabu/prometheus/prometheus-envoy-intensions-demo.yml:/etc/prometheus/prometheus.yml
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.0.9
   
 networks:
   vpcbr:
