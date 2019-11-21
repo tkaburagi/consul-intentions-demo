@@ -119,7 +119,7 @@ services:
     ports:
       - 9999:9090
     volumes:
-      - /Users/kabu/prometheus/prometheus-envoy-intensions-demo.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus-envoy-intensions-demo.yml:/etc/prometheus/prometheus.yml
     networks:
       vpcbr:
         ipv4_address: 10.5.0.9
