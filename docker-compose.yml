@@ -113,16 +113,6 @@ services:
       - "./consul.d:/config"
     command: ["consul", "connect", "envoy","-sidecar-for", "unintentionalapp"]
     network_mode: "service:unintentionalapp"
-
-  prometheus-server:
-    image: prom/prometheus
-    ports:
-      - 9999:9090
-    volumes:
-      - ./prometheus-envoy-intensions-demo.yml:/etc/prometheus/prometheus.yml
-    networks:
-      vpcbr:
-        ipv4_address: 10.5.0.9
   
 networks:
   vpcbr:
