@@ -2,7 +2,7 @@ version: "3.3"
 services:
 
   consul:
-    image: consul:1.6.0
+    image: consul:1.9.1
     command: ["consul","agent","-config-file=/config/consul-config.hcl","-config-dir=/config"]
     volumes:
       - "./consul_config:/config"
@@ -24,7 +24,7 @@ services:
       - 8080:8080
       - 9102:9102
   hashicorpjapanapp_envoy:
-    image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
+    image: nicholasjackson/consul-envoy:v1.8.3-v1.13.4
     environment:
       CONSUL_HTTP_ADDR: 10.5.0.2:8500
       CONSUL_GRPC_ADDR: 10.5.0.2:8502
@@ -33,7 +33,7 @@ services:
       - "./consul.d:/config"
     command: ["consul", "connect", "envoy","-sidecar-for", "hashicorpjapanapp"]
     network_mode: "service:hashicorpjapanapp"
- 
+
   hashiapp:
     build:
       context: ./hashiapp
@@ -44,7 +44,7 @@ services:
     ports:
       - 1010:8080
   hashiapp_envoy:
-    image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
+    image: nicholasjackson/consul-envoy:v1.8.3-v1.13.4
     environment:
       CONSUL_HTTP_ADDR: 10.5.0.2:8500
       CONSUL_GRPC_ADDR: 10.5.0.2:8502
@@ -53,7 +53,7 @@ services:
       - "./consul.d:/config"
     command: ["consul", "connect", "envoy","-sidecar-for", "hashiapp"]
     network_mode: "service:hashiapp"
-  
+
   corpapp:
     build:
       context: ./corpapp
@@ -64,7 +64,7 @@ services:
     ports:
       - 2020:8080
   corpapp_envoy:
-    image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
+    image: nicholasjackson/consul-envoy:v1.8.3-v1.13.4
     environment:
       CONSUL_HTTP_ADDR: 10.5.0.2:8500
       CONSUL_GRPC_ADDR: 10.5.0.2:8502
@@ -84,7 +84,7 @@ services:
     ports:
       - 3030:8080
   japanapp_envoy:
-    image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
+    image: nicholasjackson/consul-envoy:v1.8.3-v1.13.4
     environment:
       CONSUL_HTTP_ADDR: 10.5.0.2:8500
       CONSUL_GRPC_ADDR: 10.5.0.2:8502
@@ -104,7 +104,7 @@ services:
     ports:
       - 9090:8080
   unintentionalapp_envoy:
-    image: nicholasjackson/consul-envoy:v1.6.0-v0.10.0
+    image: nicholasjackson/consul-envoy:v1.8.3-v1.13.4
     environment:
       CONSUL_HTTP_ADDR: 10.5.0.2:8500
       CONSUL_GRPC_ADDR: 10.5.0.2:8502
@@ -113,7 +113,17 @@ services:
       - "./consul.d:/config"
     command: ["consul", "connect", "envoy","-sidecar-for", "unintentionalapp"]
     network_mode: "service:unintentionalapp"
-  
+
+#  prometheus-server:
+#    image: prom/prometheus
+#    ports:
+#      - 9999:9090
+#    volumes:
+#      - ./prometheus-envoy-intensions-demo.yml:/etc/prometheus/prometheus.yml
+#    networks:
+#      vpcbr:
+#        ipv4_address: 10.5.0.9
+
 networks:
   vpcbr:
     driver: bridge

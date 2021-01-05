@@ -19,4 +19,19 @@ connect {
   enabled = true
 }
 
+telemetry = {
+  "prometheus_retention_time" = "3h",
+}
+
 enable_central_service_config = true
+
+config_entries {
+  bootstrap =
+  [{
+    kind = "proxy-defaults"
+    name = "global"
+    config {
+      "envoy_prometheus_bind_addr" = "0.0.0.0:9102"
+    }
+  }]
+}
