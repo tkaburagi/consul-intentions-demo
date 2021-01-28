@@ -1,6 +1,5 @@
 package com.example.demo;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -24,12 +23,20 @@ public class CorpApplication {
         SpringApplication.run(CorpApplication.class, args);
     }
 
-    @GetMapping
-    public String corp() throws Exception {
-        URI url = new URI("http://127.0.0.1:5000/");
+    @GetMapping("/api/japan")
+    public String japan() throws Exception {
+        System.out.println("japan");
+        URI url = new URI("http://127.0.0.1:5000/api/japan");
         String japan = restTemplate.getForEntity(url, String.class).getBody();
-
         return "Corp " + japan;
+    }
+
+    @GetMapping(value = "/api/france")
+    public String france() throws Exception {
+        System.out.println("france");
+        URI url = new URI("http://127.0.0.1:5000/api/france");
+        String france = restTemplate.getForEntity(url, String.class).getBody();
+        return "Corp " + france;
     }
 
 }

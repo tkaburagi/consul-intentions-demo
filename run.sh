@@ -4,6 +4,10 @@ cd japanapp
 
 ./mvnw clean package -DskipTests
 
+cd franceapp
+
+./mvnw clean package -DskipTests
+
 cd ../corpapp
 
 ./mvnw clean package -DskipTests

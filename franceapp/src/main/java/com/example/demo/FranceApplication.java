@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class JapanApplication {
+public class FranceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(JapanApplication.class, args);
+        SpringApplication.run(FranceApplication.class, args);
     }
 
-    @GetMapping(value = "/api/japan")
-    public String japan(){
-        return "Japan";
+    @GetMapping(value = "/api/france")
+    public String france(){
+        return "France";
     }
 }

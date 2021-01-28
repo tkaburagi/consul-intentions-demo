@@ -23,15 +23,25 @@ public class HashiCorpJapanApplication {
         SpringApplication.run(HashiCorpJapanApplication.class, args);
     }
 
-    @GetMapping
+    @GetMapping("/japan")
     public String hashicorpjapan() throws Exception {
         URI url = new URI("http://127.0.0.1:5000/");
-        URI url1 = new URI("http://127.0.0.1:5001/");
+        URI url1 = new URI("http://127.0.0.1:5001/api/japan");
         String messageFromHashi = restTemplate.getForEntity(url, String.class).getBody();
         String messageFromCorpJapan = restTemplate.getForEntity(url1, String.class).getBody();
-
-
         return messageFromHashi + messageFromCorpJapan;
+    }
+
+
+    @GetMapping(value = "/france")
+    public String hashicorpfrance() throws Exception {
+        URI url = new URI("http://127.0.0.1:5000/");
+        URI url1 = new URI("http://127.0.0.1:5001/api/france");
+        String messageFromHashi = restTemplate.getForEntity(url, String.class).getBody();
+        String messageFromCorpFrance = restTemplate.getForEntity(url1, String.class).getBody();
+
+
+        return messageFromHashi + messageFromCorpFrance;
 
     }
 

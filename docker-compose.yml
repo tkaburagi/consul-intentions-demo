@@ -9,6 +9,7 @@ services:
       - "./consul_data:/data"
     ports:
       - 8500:8500
+      - 8600:8600
     networks:
       vpcbr:
         ipv4_address: 10.5.0.2
@@ -94,6 +95,26 @@ services:
     command: ["consul", "connect", "envoy","-sidecar-for", "japanapp"]
     network_mode: "service:japanapp"
 
+  franceapp:
+    build:
+      context: ./franceapp
+      dockerfile: Dockerfile
+    networks:
+      vpcbr:
+        ipv4_address: 10.5.1.6
+    ports:
+      - 3131:8080
+  franceapp_envoy:
+    image: nicholasjackson/consul-envoy:v1.8.3-v1.13.4
+    environment:
+      CONSUL_HTTP_ADDR: 10.5.0.2:8500
+      CONSUL_GRPC_ADDR: 10.5.0.2:8502
+      SERVICE_CONFIG: /config/sidecar-franceapp.json
+    volumes:
+      - "./consul.d:/config"
+    command: ["consul", "connect", "envoy","-sidecar-for", "franceapp"]
+    network_mode: "service:franceapp"
+
   unintentionalapp:
     build:
       context: ./hashicorpjapanapp
@@ -114,15 +135,15 @@ services:
     command: ["consul", "connect", "envoy","-sidecar-for", "unintentionalapp"]
     network_mode: "service:unintentionalapp"
 
-#  prometheus-server:
-#    image: prom/prometheus
-#    ports:
-#      - 9999:9090
-#    volumes:
-#      - ./prometheus-envoy-intensions-demo.yml:/etc/prometheus/prometheus.yml
-#    networks:
-#      vpcbr:
-#        ipv4_address: 10.5.0.9
+  # prometheus-server:
+  #   image: prom/prometheus
+  #   ports:
+  #     - 9999:9090
+  #   volumes:
+  #     - ./prometheus-envoy-intensions-demo.yml:/etc/prometheus/prometheus.yml
+  #   networks:
+  #     vpcbr:
+  #       ipv4_address: 10.5.0.9
 
 networks:
   vpcbr:
